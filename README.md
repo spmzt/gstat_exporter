@@ -119,3 +119,20 @@ gstat_percent_busy{descr="WDC WDS500G2B0B-00YS70",fwheads="16",fwsectors="63",id
 gstat_percent_busy{descr="WDC WD181KRYZ-01AGBB0",fwheads="16",fwsectors="63",ident="3WJJG8NK",lunid="5000cca284e3aa8c",mediasize="18000207937536 (16T)",name="ada1",rotationrate="7200",sectorsize="512"} 0.0
 gstat_percent_busy{descr="ST18000NE000-2YY101",fwheads="16",fwsectors="63",ident="ZR50A7AJ",lunid="5000c500c7dc3971",mediasize="18000207937536 (16T)",name="ada2",rotationrate="7200",sectorsize="512"} 0.0
 ```
+
+# Inside Jail
+
+To use the gstat exporter inside a jail, you'll need to unhide the `/dev/devstat` path.
+
+Add the following rules to your `/etc/devfs.rules` file:
+
+```devfs
+[devfsrules_jail_exporter=5]
+add include $devfsrules_hide_all
+add include $devfsrules_unhide_basic
+add include $devfsrules_unhide_login
+add include $devfsrules_jail
+add path 'devstat' unhide
+```
+
+Set `devfs_ruleset=5` in your jail configuration.
